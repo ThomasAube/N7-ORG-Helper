@@ -1,13 +1,25 @@
+const { Permissions } = require('discord.js');
+
 module.exports = {
     name: "create-channel",
     category: "channel", 
     permissions: ['MANAGE_CHANNELS'],
     devOnly: false,
     run: async({client, message, args}) => {
-        channelName = (args.length > 0) ? args[0] : "channel-test"
-        message.guild.channels.create(channelName, {
-            topic: "Mon nouveau channel",
+        user = message.mentions.users.first()
+        message.guild.channels.create(`${args[0]}-${user.username}`, {
+            permissionOverwrites: [
+                {
+                    id: message.guild.roles.everyone.id,
+                    deny: [Permissions.FLAGS.VIEW_CHANNEL],
+                },
+                {
+                    id: user.id,
+                    allow: [Permissions.FLAGS.VIEW_CHANNEL],
+                },
+            ],
         }).then(channel => {
+            channel.setParent
             message.reply(`<#${channel.id}>`)
         })
     }
