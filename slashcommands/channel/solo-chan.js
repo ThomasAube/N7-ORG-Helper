@@ -37,7 +37,7 @@ const run = async (client, interaction) => {
     })
 
     addingChannel.then(() => {
-        let answer = addedChannels.map(c => `<#${c}> created !`).join('\n')
+        let answer = addedChannels.map(c => `<#${c}> was created !`).join('\n')
         interaction.reply(answer)
     })
 }
