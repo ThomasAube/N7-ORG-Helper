@@ -3,7 +3,7 @@ const Discord = require("discord.js")
 module.exports = {
     name: "messageCreate",
     run: async function runAll(bot, message) {
-        const {client, prefix, owners} = bot
+        const {client, prefix} = bot
 
         if(!message.guild || message.author.bot || !message.content.startsWith(prefix)) return
         const args = message.content.slice(prefix.length).split(/ +/g)
@@ -13,7 +13,6 @@ module.exports = {
         if(!command) return
         
         let member = message.member
-        if(command.devOnly && !owners.includes(member.id)) return message.reply("This command is only available to the bot owners")
         if(command.permissions && member.permissions.missing(command.permissions).length !== 0) return message.reply("You do not have permissions to use this command")
 
         try {

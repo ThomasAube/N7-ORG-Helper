@@ -36,11 +36,15 @@ function triggerEventHandler(bot, event, ...args) {
 function initEvents(bot) {
     const {client} = bot
 
-    client.on("ready", () => {
-        triggerEventHandler(bot, "ready")
+    client.on("interactionCreate", (interaction) => {
+        triggerEventHandler(bot, "interactionCreate", interaction)
     })
 
     client.on("messageCreate", (message) => {
         triggerEventHandler(bot, "messageCreate", message)
+    })
+
+    client.on("ready", () => {
+        triggerEventHandler(bot, "ready")
     })
 }
