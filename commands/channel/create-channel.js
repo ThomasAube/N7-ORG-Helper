@@ -19,7 +19,6 @@ module.exports = {
                 },
             ],
         }).then(channel => {
-            channel.setParent
             message.reply(`<#${channel.id}>`)
         })
     }

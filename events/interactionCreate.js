@@ -10,7 +10,7 @@ module.exports = {
     
         const slashcommand = client.slashcommands.get(interaction.commandName)
         if(!slashcommand) return interaction.reply("Invalid slashcommand")
-        if(slashcommand.perm && !interaction.member.permissions.has(slashcommand.perm)) return interaction.reply("You do not have permissions to use this slashcommand")
+        if(slashcommand.permissions && !interaction.member.permissions.has(slashcommand.perm)) return interaction.reply("You do not have permissions to use this slashcommand")
     
         try {
             await slashcommand.run(client, interaction)

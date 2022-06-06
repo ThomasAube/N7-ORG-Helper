@@ -21,7 +21,7 @@ const run = async (client, interaction) => {
 module.exports = {
     name: "ban",
     description: "Bans a member",
-    perm: "BAN_MEMBERS",
+    permissions: "BAN_MEMBERS",
     options: [
         {
             name: "user", description: "The user to ban",
