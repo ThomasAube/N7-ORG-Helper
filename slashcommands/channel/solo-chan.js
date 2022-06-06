@@ -15,6 +15,8 @@ const run = async (client, interaction) => {
         soloUsers = guildMembers.filter(m => m.roles.cache.has(mentionable.id))
     } else soloUsers.set(mentionable.id, mentionable)
 
+    if(soloUsers.size === 0) interaction.reply("There is no channel to create")
+
     const addingChannel = new Promise((resolve, reject) => {
         soloUsers.forEach(u => {
             interaction.guild.channels.create(`${prefix} ${u.user.username}`, {
@@ -29,7 +31,7 @@ const run = async (client, interaction) => {
                     },
                 ],
             }).then(newSolo => {
-                if(category && category.type === "GUILD_CATEGORY") newSolo.setParent(category)
+                if(category && category.type === "GUILD_CATEGORY") newSolo.setParent(category, {lockPermissions: false})
                 addedChannels.push(newSolo.id)
                 if(addedChannels.length === soloUsers.size) resolve()
             })

@@ -1,12 +1,12 @@
 const Discord = require("discord.js")
-const { Permissions } = require('discord.js');
-const { Role } = require('discord.js');
 
 const run = async (client, interaction) => {
     let channel = interaction.options.getChannel("channel_or_category")
 
     let channelsToDelete = channel.type === "GUILD_CATEGORY" ? channel.children : new Discord.Collection().set(channel.id, channel)
     let deletedChannels = new Array()
+
+    if(channelsToDelete.size === 0) interaction.reply("There is no channel to delete")
 
     const deletingChannel = new Promise((resolve, reject) => {
         channelsToDelete.forEach(c => {
