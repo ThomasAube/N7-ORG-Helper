@@ -3,7 +3,7 @@ const { Permissions } = require('discord.js');
 const { Role } = require('discord.js');
 
 const run = async (client, interaction) => {
-    let mentionable = interaction.options.getMentionable("user")
+    let mentionable = interaction.options.getMentionable("user_or_role")
     let category = interaction.options.getChannel("category")
     let prefix = interaction.options.getString("prefix") || ''
     
@@ -50,7 +50,7 @@ module.exports = {
     permissions: ["MANAGE_CHANNELS"],
     options: [
         {
-            name: "user",
+            name: "user_or_role",
             description: "The user you want to create the solo-chan for",
             type: "MENTIONABLE",
             required: true,
@@ -59,7 +59,7 @@ module.exports = {
             name: "category",
             description: "The category where you want to create the solo-chan",
             type: "CHANNEL",
-            required: false,
+            required: true,
         },
         {
             name: "prefix",
