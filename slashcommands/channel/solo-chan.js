@@ -19,7 +19,7 @@ const run = async (client, interaction) => {
 
     const addingChannel = new Promise((resolve, reject) => {
         soloUsers.forEach(u => {
-            interaction.guild.channels.create(`${prefix} ${u.user.username}`, {
+            interaction.guild.channels.create(`${prefix} ${u.nickname ? u.nickname : u.user.username}`, {
                 permissionOverwrites: [
                     {
                         id: interaction.guild.roles.everyone.id,

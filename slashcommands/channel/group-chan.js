@@ -13,7 +13,7 @@ const run = async (client, interaction) => {
 
     if(membersToAdd.size === 0) interaction.reply("There is no channel to create")
 
-    groupName = name ? name : `${prefix} ${membersToAdd.map(member => member.user.username).sort().join("-")}`
+    groupName = name ? name : `${prefix} ${membersToAdd.map(member => member.nickname ? member.nickname : member.user.username).sort().join("-")}`
 
     interaction.guild.channels.create(groupName).then(newGroup => {
         newGroup.permissionOverwrites.create(interaction.guild.roles.everyone, {
