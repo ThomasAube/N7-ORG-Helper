@@ -12,7 +12,7 @@ const run = async (client, interaction) => {
 
     while(deleted < amount && next) {
         let messages = await interaction.channel.messages.fetch({before: lastId})
-        if(messages.size() === 0) {
+        if(messages.size === 0) {
             next = false
         } else {
             lastId = messages.last().id
