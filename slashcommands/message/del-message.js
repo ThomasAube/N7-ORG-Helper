@@ -11,13 +11,12 @@ const run = async (client, interaction) => {
     let next = true
     let lastId = null
 
+    await interaction.reply('Wait...')
+    await interaction.fetchReply().then(reply => lastId = reply.id)
+
     while(deleted < amount && next) {
         let messages = await interaction.channel.messages.fetch({before: lastId})
-        console.log(messages)
-        console.log(messages instanceof Message)
         if(messages instanceof Message) messages = new Discord.Collection().set(messages.id, messages)
-        console.log(messages)
-        console.log(messages instanceof Message)
 
         if(messages.size === 0) {
             next = false
@@ -25,13 +24,16 @@ const run = async (client, interaction) => {
             lastId = messages.last().id
             if(member) messages = messages.filter(message => message.author.id === member.id)
 
-            for(let i = 0; deleted < amount && i < messages.size(); ++i) {
-                await messages.at(i).delete()
+            for(let i = 0; deleted < amount && i < messages.size; ++i) {
+                messages.at(i).delete()
+                deleted++
             }
         }
     }
 
-    interaction.reply(`${deleted} messages${deleted > 1 ? "s" : ""} deleted !`)
+    interaction.editReply(`${deleted} message${deleted > 1 ? "s" : ""} deleted !`).then(reply => {
+        setTimeout(() => reply.delete(), 2000)
+    })
 }
 
 module.exports = {
