@@ -1,4 +1,5 @@
 const Discord = require("discord.js")
+const { Message } = require('discord.js');
 
 const run = async (client, interaction) => {
     let member = interaction.options.getMember("member")
@@ -12,6 +13,8 @@ const run = async (client, interaction) => {
 
     while(deleted < amount && next) {
         let messages = await interaction.channel.messages.fetch({before: lastId})
+        if(messages instanceof Message) messages = new Discord.Collection().set(messages.id, messages)
+        
         if(messages.size === 0) {
             next = false
         } else {
