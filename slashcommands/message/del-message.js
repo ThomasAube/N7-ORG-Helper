@@ -13,8 +13,12 @@ const run = async (client, interaction) => {
 
     while(deleted < amount && next) {
         let messages = await interaction.channel.messages.fetch({before: lastId})
+        console.log(messages)
+        console.log(messages instanceof Message)
         if(messages instanceof Message) messages = new Discord.Collection().set(messages.id, messages)
-        
+        console.log(messages)
+        console.log(messages instanceof Message)
+
         if(messages.size === 0) {
             next = false
         } else {
