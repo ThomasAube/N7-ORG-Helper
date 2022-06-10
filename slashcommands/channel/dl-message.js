@@ -1,6 +1,6 @@
 const Discord = require("discord.js")
 const { MessageAttachment } = require("discord.js");
-const { MessageMentions: { USERS_PATTERN, ROLES_PATTERN } } = require("discord.js");
+const { MessageMentions: { CHANNELS_PATTERN, USERS_PATTERN, ROLES_PATTERN } } = require("discord.js");
 const fs = require("fs");
 
 
@@ -26,6 +26,7 @@ const run = async (client, interaction) => {
     allMessages.sort((m1, m2) => m1.createdAt < m2.createdAt).reverse()
     let guildMembers = await interaction.guild.members.fetch()
     let guildRoles = await interaction.guild.roles.fetch()
+    let guildChannels = await interaction.guild.channels.fetch()
 
     allMessages.forEach(m => {
         content = m.content
@@ -33,13 +34,26 @@ const run = async (client, interaction) => {
         users = [...content.matchAll(USERS_PATTERN)]
         users.forEach(word => {
             member = guildMembers.get(word[1])
-            nick = "@" + (member.nickname ? member.nickname : member.user.username)
-            content = content.replace(word[0], nick)
+            if(member) {
+                nick = (member.nickname ? member.nickname : member.user.username)
+                content = content.replace(word[0], `@${nick}`)
+            }
         })
 
         roles = [...content.matchAll(ROLES_PATTERN)]
         roles.forEach(word => {
-            content = content.replace(word[0], "@" + guildRoles.get(word[1]).name)
+            role = guildRoles.get(word[1])
+            if(role) {
+                content = content.replace(word[0], `@${role.name}`)
+            }
+        })
+
+        channels = [...content.matchAll(CHANNELS_PATTERN)]
+        channels.forEach(word => {
+            channel = guildChannels.get(word[1])
+            if(channel) {
+                content = content.replace(word[0], `#${channel.name}`)
+            }
         })
 
         fs.appendFile("export.txt", `${m.author.username} [${m.createdAt.toLocaleString("fr-FR")}] : \n${content}\n\n`, () => {})
