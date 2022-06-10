@@ -30,6 +30,8 @@ const run = async (client, interaction) => {
 
     allMessages.forEach(m => {
         content = m.content
+        author = guildMembers.get(m.author.id)
+        authorName = author.nickname ? author.nickname : author.user.username
 
         users = [...content.matchAll(USERS_PATTERN)]
         users.forEach(word => {
@@ -56,7 +58,7 @@ const run = async (client, interaction) => {
             }
         })
 
-        fs.appendFile("export.txt", `${m.author.username} [${m.createdAt.toLocaleString("fr-FR")}] : \n${content}\n\n`, () => {})
+        fs.appendFile("export.txt", `${authorName} [${m.createdAt.toLocaleString("fr-FR")}] : \n${content}\n\n`, () => {})
     })
 
     interaction.editReply({
