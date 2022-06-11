@@ -31,7 +31,7 @@ const run = async (client, interaction) => {
     allMessages.forEach(m => {
         content = m.content
         author = guildMembers.get(m.author.id)
-        authorName = author.nickname ? author.nickname : author.user.username
+        authorName = author ? author.nickname ? author.nickname : author.user.username : m.author.username
 
         users = [...content.matchAll(USERS_PATTERN)]
         users.forEach(word => {
