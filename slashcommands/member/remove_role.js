@@ -5,6 +5,7 @@ const run = async (client, interaction) => {
     let everyone = interaction.options.getBoolean("everyone") || false
     let membersToUpdate = new Discord.Collection()
 
+    await interaction.reply("Wait...")
     if(everyone) {
         members = await interaction.guild.members.fetch()
         membersToUpdate = members.filter(m => m.roles.cache.has(role.id))
@@ -17,7 +18,7 @@ const run = async (client, interaction) => {
     }
     
     let updatedMembers = new Array()
-    if(membersToUpdate.size === 0) interaction.reply("There is no member to update")
+    if(membersToUpdate.size === 0) interaction.editReply("There is no member to update")
 
     const removingRole = new Promise((resolve, reject) => {
         membersToUpdate.forEach(m => {
@@ -30,7 +31,7 @@ const run = async (client, interaction) => {
 
     removingRole.then(() => {
         let answer = updatedMembers.map(m => `Role ${role} was retired from ${m} !`).join('\n')
-        interaction.reply(answer)
+        interaction.editReply(answer)
     })
 }
 
