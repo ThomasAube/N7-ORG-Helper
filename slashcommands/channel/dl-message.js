@@ -5,6 +5,9 @@ const fs = require("fs");
 
 
 const run = async (client, interaction) => {
+    let fileName = interaction.options.getString("file-name") || "export"
+    fileName = fileName.replaceAll(/[^A-z0-9 éèàùïë]/gi, "").trim().replaceAll(" ", "-") + ".txt"
+
     let next = true
     let lastId = null
     let allMessages = new Discord.Collection()
@@ -58,16 +61,16 @@ const run = async (client, interaction) => {
             }
         })
 
-        fs.appendFile("export.txt", `${authorName} [${m.createdAt.toLocaleString("fr-FR")}] : \n${content}\n\n`, () => {})
+        fs.appendFile(`${fileName}`, `${authorName} [${m.createdAt.toLocaleString("fr-FR")}] : \n${content}\n\n`, () => {})
     })
 
     interaction.editReply({
         content: "Here's an archive !",
         files: [
-            new MessageAttachment("export.txt")
+            new MessageAttachment(`${fileName}`)
         ]
     }).then(() => {
-        fs.unlink("export.txt", () => {})
+        fs.unlink(`${fileName}`, () => {})
     })
 }
 
@@ -75,5 +78,13 @@ module.exports = {
     name: "dl-message",
     description: "DL messages in a channel",
     permissions: ["MANAGE_MESSAGES"],
+    options: [
+        {
+            name: "file-name",
+            description: "The name of your file",
+            type: "STRING",
+            required: false,
+        },
+    ],
     run,
 }
